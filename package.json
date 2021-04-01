@@ -1,0 +1,32 @@
+{
+  "name": "hello-twitter",
+  "version": "0.0.1",
+  "description": "A minimalistic, opinionated Twitter search API, written in TypeScript.",
+  "scripts": {
+    "test": "mocha -r ts-node/register src/test/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenneth-lange/hello-twitter.git"
+  },
+  "keywords": [
+    "twitter",
+    "typescript",
+    "api"
+  ],
+  "author": "Kenneth Lange",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kenneth-lange/hello-twitter/issues"
+  },
+  "homepage": "https://github.com/kenneth-lange/hello-twitter#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.37",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
