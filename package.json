@@ -2,8 +2,12 @@
   "name": "hello-twitter",
   "version": "0.0.1",
   "description": "A minimalistic, opinionated Twitter search API, written in TypeScript.",
+  "main": "dist/HelloTwitter.js",
+  "types": "dist/HelloTwitter.d.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/test/**/*.spec.ts"
+    "build": "npx tsc",
+    "test": "mocha -r ts-node/register src/tests/**/*.spec.ts",
+    "prepublish": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -26,6 +30,7 @@
     "@types/node": "^14.14.37",
     "chai": "^4.3.4",
     "mocha": "^8.3.2",
+    "nock": "^13.0.11",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   }

@@ -219,7 +219,7 @@ export const parseTweets = (json: string): Tweet[] => {
         });
 
         // Get the expanded URL for the user's website
-        if (status.user.entities.url.urls[0]) {
+        if (status.user.entities.url && tweets[tweets.length - 1].author.website) {
             tweets[tweets.length - 1].author.website = status.user.entities.url.urls[0].expanded_url;
         }
 

@@ -1,4 +1,4 @@
-export const twitterSearchResult = {
+export const twitterSearchResultFixture = {
     "statuses": [
         {
             "created_at": "Mon Mar 29 14:57:44 +0000 2021",

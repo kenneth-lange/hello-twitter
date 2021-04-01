@@ -1,4 +1,4 @@
-export const twitterTimeline = [
+export const twitterTimelineResultFixture = [
     {
       "created_at": "Thu Apr 06 15:28:43 +0000 2017",
       "id": 850007368138018817,

@@ -3,12 +3,12 @@ import { assert, expect } from 'chai';
 
 import { parseTweets } from '../Tweet';
 
-import { twitterTimeline } from './timeline.fixture';
-import { twitterSearchResult } from './search.fixture';
+import { twitterTimelineResultFixture  } from './timeline.fixture';
+import { twitterSearchResultFixture } from './search.fixture';
 
 describe('Tweet', () => {
     it('parses a Twitter timeline', () => {
-        const tweets = parseTweets(JSON.stringify(twitterTimeline));
+        const tweets = parseTweets(JSON.stringify(twitterTimelineResultFixture));
 
         expect(tweets).to.have.lengthOf(1);
         expect(tweets[0].id).to.equal('850007368138018817');
@@ -68,7 +68,7 @@ describe('Tweet', () => {
     });
 
     it('parses a Twitter search', () => {
-        const tweets = parseTweets(JSON.stringify(twitterSearchResult));
+        const tweets = parseTweets(JSON.stringify(twitterSearchResultFixture));
 
         expect(tweets).to.have.lengthOf(1);
         expect(tweets[0].id).to.equal('1376549139132080135');
