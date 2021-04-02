@@ -31,3 +31,43 @@ twitter.fetchTweets({ query: 'Hello world' }).then(tweets => console.log(tweets)
 ```
 
 The collection of tweets returned is fully typed and documented (in TSDoc), so it should be easy to continue from here simply by using your IDE's autocomplete and intellisense.
+
+## Code examples
+
+### Example 1: What's happening in California?
+
+```javascript
+// Let's check out what they're writing about California
+const tweets = await twitter.fetchTweets({ query: 'California' });
+tweets.forEach(tweet => {
+    console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
+});
+```
+
+### Example 2: What is Paul Graham tweeting?
+
+```javascript
+// Get the latest original tweets (no replies or retweets) from Paul Graham:
+const tweets = await twitter.fetchTimeline({ username: 'paulg' });
+tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
+    console.log(`"${tweet.text}" (${tweet.likes} likes)`);
+});
+```
+
+### Example 3: The Top 5 most popular tweets about #TypeScript
+
+```javascript
+// Get a Top 5 of the most popular tweets tagged with #TypeScript:
+const tweets = await twitter.fetchTweets({ query: '#TypeScript' });
+tweets.sort((a, b) => b.likes - a.likes);
+tweets.slice(0, 4).forEach((tweet, index) => {
+    console.log(`${index+1}: "${tweet.text}" by ${tweet.author.name} (${tweet.likes} likes)`);
+});
+```
+
+
+
+
+
+
+
