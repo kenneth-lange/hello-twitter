@@ -63,7 +63,7 @@ export class HelloTwitter {
                     options.headers['Content-Length'] = data.length;
                 }
                 if (!options.headers['User-Agent']) {
-                    options.headers['User-Agent'] = 'TweetFetcher';
+                    options.headers['User-Agent'] = 'HelloTwitter';
                 }
             }
     

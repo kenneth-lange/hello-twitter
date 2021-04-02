@@ -1,5 +1,5 @@
-# Hello Twitter 👋
-A minimalistic, opinionated Twitter Query API, written in TypeScript.
+# HelloTwitter 👋
+`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript for TypeScript.
 
 The purpose of this API is to make it fast and super easy to query Twitter data, without needing to waste time on writing plumbing code, so we instead can invest our time in data analysis and other higher-value tasks.
 
