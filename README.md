@@ -56,7 +56,7 @@ tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
 });
 ```
 
-### Example 3: What is the Top 5 most popular tweets about #TypeScript?
+### Example 3: What are the Top 5 most popular tweets about #TypeScript?
 The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
 
 ```javascript
