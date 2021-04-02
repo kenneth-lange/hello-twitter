@@ -124,11 +124,11 @@ console.log(`number of tweets returned: ${tweets.length}.`);
 console.log(`total number of tweets according to twitter: ${tweets[0].author.numberOfTweets}.`);
 ```
 
-However, for Twitter users with many tweets (>2,000) there is a risk that, even with a high number in `resultSize`, you will not get all of the tweets (as see in `tweet.author.numberOfTweets`); in particular, the user's oldest tweets. 
+However, for Twitter users with many tweets (>3,000) there is a risk that, even with a high number in `resultSize`, you will not get all of the tweets (as see in `tweet.author.numberOfTweets`); in particular, the user's oldest tweets. 
 
 ⛔️ **Warning:** Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `hello-twitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
 
-### Get the oldest tweet in a collection of tweets
+### Find the oldest tweet in a collection of tweets
 Often when you need to create a timeline or similar, you need the oldest (and newest) tweet in a collection to know the total duration of the timeline.
 
 You can use JavaScript's `reduce` function to find the oldest tweet:
@@ -141,3 +141,88 @@ const oldestTweet = tweets.reduce((accumulator, currentValue) => {
 ```
 
 Getting the newest tweet in a tweet collection is left as a fun exercise for the reader 😊
+
+And alternative approach is also simply to sort the array (`tweets.sort`) and then take the first and last element.
+
+### Find the best time to tweet
+Much tweet analytics is about finding the optimal time to tweet. The example below is just a beginning that shows how many tweets the user has posted on each weekday.
+
+```javascript
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const tweetsPerDay = new Map<string, number>();
+
+const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
+tweets.forEach(tweet => {
+    const weekday = weekdays[tweet.created.getDay()];
+    const newCount = (tweetsPerDay.get(weekday) ?? 0) + 1;
+    tweetsPerDay.set(weekday, newCount);
+});
+
+tweetsPerDay.forEach((numberOfTweets, day) => {
+    console.log(`${day}: ${numberOfTweets}`);
+});
+```
+
+We can easily increase the granularity by seeing the time of day when the user tweets (`tweet.created.getHours()`) and instead of looking at the number of tweets, we can see what it the most popular time to tweet (by looking at `tweet.likes` or `tweet.retweets`).
+
+### Find the best time to tweet - part 2
+Given that, "When is the optimal time for me to tweet?" seems to be the top question for Twitter Analytics, I thought I would include a quick and dirty example of how to achieve this:
+
+```javascript
+type Stats = {
+    numberOfTweets: number,
+    totalEngagement: number,
+    averageEngagement: number
+};
+
+const createStats = (): Stats => {
+    return { numberOfTweets: 0, totalEngagement: 0, averageEngagement: 0 };
+}
+
+// Create a two-dimensional array (7x24) to represent the 7 days in a week and 24 hours in a day.
+const week = Array(7).fill(null).map(() => Array(24));
+for (let day = 0; day < week.length; day++) {
+    for (let hour = 0; hour < week[day].length; hour++) {
+        week[day][hour] = createStats();
+    }
+}
+
+const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
+const newTweets = tweets.filter(tweet => {
+    return !tweet.isReply && !tweet.isRetweet && !tweet.isQuote;
+});
+
+// Gather the stats from the data returned from Twitter
+newTweets.forEach(tweet => {
+    const slot = week[tweet.created.getDay()][tweet.created.getHours()] ?? createStats();
+    slot.numberOfTweets++;
+    slot.totalEngagement += tweet.retweets + tweet.likes;
+    week[tweet.created.getDay()][tweet.created.getHours()] = slot;
+});
+
+// Calculate the average engagement per day
+for (let day = 0; day < week.length; day++) {
+    for (let hour = 0; hour < week[day].length; hour++) {
+        if (week[day][hour].numberOfTweets > 0) {
+            week[day][hour].averageEngagement = Math.round(week[day][hour].totalEngagement / week[day][hour].numberOfTweets);
+        }
+    }
+}
+
+// Print the week (CSV style) so it can be imported in a spreadsheet for further analysis.
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+console.log('Weekday, 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23');
+for (let day = 0; day < week.length; day++) {
+    let entry  = weekdays[day];
+    for (let hour = 0; hour < week[day].length; hour++) {
+        entry += ', ' + week[day][hour].averageEngagement; // Can be changed to numberOfTweets or totalEngagament
+    }
+    console.log(entry);
+}
+```
+
+I included a screenshot below where I have taken the CSV-styled data and put into Google Sheets, and added a bit of color scales to (to get a bit of heatmap feel) and came to the conclusion that posting during first half of the day on Tuesday and Wednesday seems to be a good time to post new tweets:
+
+![Google Sheet screenshot](https://kennethlange.com/github_images/twitter_post_heatmap.png)
+
+The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet.
