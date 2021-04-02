@@ -174,10 +174,11 @@ export class HelloTwitter {
         const tweets: Tweet[] = [];
         let maxId: string | null = null;
 
+        const countCondition = '&count=' + encodeURIComponent(Math.min(options.resultSize ?? 200, 200));
+
         let keepGoing = true;
         while (keepGoing) {
             const maxIdCondition = (maxId !== null ? '&max_id=' + encodeURIComponent(maxId) : '');
-            const countCondition = '&count=' + encodeURIComponent(Math.min(options.resultSize ?? 200, 200));
 
             const response = await this.callTwitterApi({
                 hostname: 'api.twitter.com',
