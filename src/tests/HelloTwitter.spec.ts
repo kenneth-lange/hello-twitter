@@ -51,8 +51,6 @@ describe('HelloTwitter', function() {
             apiKey: '...',
             apiSecret: '...'
         });
-        
-        // witter.fetchTweets({ query: 'hello world' }).then(tweets => console.log(tweets));
     });
 
 });

@@ -8,7 +8,7 @@ type TwitterCredentials = {
 
 type SearchOptions = {
     /** The text you want to search for. For instance, 'California' or '#javascript'. */
-    query: string,
+    query?: string,
 
     /** Limit the query to tweets from a specific location. */
     location?: {
@@ -125,7 +125,7 @@ export class HelloTwitter {
         const tweets: Tweet[] = [];
         let maxId: string | null = null;
 
-        const queryCondition = '&q=' + encodeURIComponent(options.query);
+        const queryCondition = (options.query !== undefined ? '&q=' + encodeURIComponent(options.query): ''); 
         const resultTypeCondition = '&result_type=' + (options.resultType !== undefined ? options.resultType : 'recent');
         const countCondition = '&count=' + encodeURIComponent(Math.min(options.resultSize ?? 200, 200));
 

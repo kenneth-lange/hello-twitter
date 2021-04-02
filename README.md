@@ -35,6 +35,7 @@ The collection of tweets returned is fully typed and documented (in TSDoc), so i
 ## Code examples
 
 ### Example 1: What's happening in California?
+The most basic example is simply to execute a Twitter query, just like you would in the Twitter App, and then list the results.
 
 ```javascript
 // Let's check out what they're writing about California
@@ -45,6 +46,7 @@ tweets.forEach(tweet => {
 ```
 
 ### Example 2: What is Paul Graham tweeting?
+So you wanna see what a specific user is weeting, but you don't want to see their retweets or replies. You can easily use JavaScript `filter` to remove unneeded tweets.
 
 ```javascript
 // Get the latest original tweets (no replies or retweets) from Paul Graham:
@@ -54,7 +56,8 @@ tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
 });
 ```
 
-### Example 3: The Top 5 most popular tweets about #TypeScript
+### Example 3: What is the Top 5 most popular tweets about #TypeScript?
+The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
 
 ```javascript
 // Get a Top 5 of the most popular tweets tagged with #TypeScript:
@@ -64,6 +67,35 @@ tweets.slice(0, 4).forEach((tweet, index) => {
     console.log(`${index+1}: "${tweet.text}" by ${tweet.author.name} (${tweet.likes} likes)`);
 });
 ```
+
+### Example 4: What are they tweeting at Stanford?
+We can use the geo search to find tweets posted at a specific geographical location.
+
+For Stanford, the latitude is 37.424107 and the longitude is -122.166077.
+
+```javascript
+const tweets = await twitter.fetchTweets({
+    location: {
+        latitude: 37.424107,
+        longitude: -122.166077
+    }
+});
+
+tweets.forEach(tweet => {
+    console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
+});
+```
+
+You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.likes`).
+  
+
+
+
+
+
+
+
+
 
 
 
