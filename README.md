@@ -12,13 +12,15 @@ Once you have a Twitter Developer Account, create a new app and go to the **Keys
 
 ### Step 2: Install the NPM package
 
-***TBD.***
+```console
+npm install hello-twitter
+```
 
 ### Step 3: Start coding
 Here's a simple hello world program to get you started. You'll need the **API Key** and **API Secret** from Step 1:
 
 ```javascript
-import HelloTwitter from '../HelloTwitter';
+import HelloTwitter from 'hello-twitter';
 
 const twitter = new HelloTwitter({
     apiKey: '<YOUR-TWITTER-API-KEY>',
