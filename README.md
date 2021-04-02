@@ -225,4 +225,4 @@ I included a screenshot below where I have taken the CSV-styled data and put int
 
 ![Google Sheet screenshot](https://kennethlange.com/github_images/twitter_post_heatmap.png)
 
-The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet.
+The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet. And it would without a doubt be a lot nicer to create a frontend and display the results there instead of using Google Sheets, but that's way beyond the scope for this little tip 😊
