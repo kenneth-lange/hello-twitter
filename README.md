@@ -101,7 +101,7 @@ So with `HelloTwitter` we can create the deep link like this:
 const link = `https://twitter.com/${tweet.author.username}/status/${tweet.id}`;
 ```
 
-💡 Tip: If you don't have access to the `username`, fear not, because Twitter
+💡 **Tip:** If you don't have access to the `username`, fear not, because Twitter
 is actually _not_ using it, so you can write anything there and the link still 
 works correctly as long as you have the right tweet ID.
 
@@ -126,7 +126,7 @@ console.log(`total number of tweets according to twitter: ${tweets[0].author.num
 
 However, for Twitter users with many tweets (>2,000) there is a risk that, even with a high number in `resultSize`, you will not get all of the tweets (as see in `tweet.author.numberOfTweets`); in particular, the user's oldest tweets. 
 
-⛔️ Warning: Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `hello-twitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
+⛔️ **Warning:** Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `hello-twitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
 
 ### Get the oldest tweet in a collection of tweets
 Often when you need to create a timeline or similar, you need the oldest (and newest) tweet in a collection to know the total duration of the timeline.
