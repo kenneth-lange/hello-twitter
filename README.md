@@ -169,42 +169,30 @@ We can easily increase the granularity by seeing the time of day when the user t
 Given that, "When is the optimal time for me to tweet?" seems to be the top question for Twitter Analytics, I thought I would include a quick and dirty example of how to achieve this:
 
 ```javascript
-type Stats = {
+type TimeSlot = {
     numberOfTweets: number,
     totalEngagement: number,
     averageEngagement: number
 };
 
-const createStats = (): Stats => {
-    return { numberOfTweets: 0, totalEngagement: 0, averageEngagement: 0 };
-}
+// Two-dimensional array (7x24) to represent the 7 days in a week and the 24 hours in a day.
+const weekStats: TimeSlot[][] = Array(7).fill(null).map(() => Array(24).fill(null).map(() => {
+    return { numberOfTweets: 0, totalEngagement: 0, averageEngagement: 0 }
+}));
 
-// Create a two-dimensional array (7x24) to represent the 7 days in a week and 24 hours in a day.
-const week = Array(7).fill(null).map(() => Array(24));
-for (let day = 0; day < week.length; day++) {
-    for (let hour = 0; hour < week[day].length; hour++) {
-        week[day][hour] = createStats();
-    }
-}
-
-const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
-const newTweets = tweets.filter(tweet => {
-    return !tweet.isReply && !tweet.isRetweet && !tweet.isQuote;
-});
-
-// Gather the stats from the data returned from Twitter
-newTweets.forEach(tweet => {
-    const slot = week[tweet.created.getDay()][tweet.created.getHours()] ?? createStats();
-    slot.numberOfTweets++;
-    slot.totalEngagement += tweet.retweets + tweet.likes;
-    week[tweet.created.getDay()][tweet.created.getHours()] = slot;
+// Fetch the tweets and put the data into the the time slots.
+const tweets = await twitter.fetchTimeline({ username: 'KennethLange' });
+tweets.forEach(tweet => {
+    const timeSlot = weekStats[tweet.created.getDay()][tweet.created.getHours()];
+    timeSlot.numberOfTweets++;
+    timeSlot.totalEngagement += tweet.retweets + tweet.likes;
 });
 
 // Calculate the average engagement per day
-for (let day = 0; day < week.length; day++) {
-    for (let hour = 0; hour < week[day].length; hour++) {
-        if (week[day][hour].numberOfTweets > 0) {
-            week[day][hour].averageEngagement = Math.round(week[day][hour].totalEngagement / week[day][hour].numberOfTweets);
+for (let day = 0; day < weekStats.length; day++) {
+    for (let hour = 0; hour < weekStats[day].length; hour++) {
+        if (weekStats[day][hour].numberOfTweets > 0) {
+            weekStats[day][hour].averageEngagement = Math.round(weekStats[day][hour].totalEngagement / weekStats[day][hour].numberOfTweets);
         }
     }
 }
@@ -212,16 +200,16 @@ for (let day = 0; day < week.length; day++) {
 // Print the week (CSV style) so it can be imported in a spreadsheet for further analysis.
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 console.log('Weekday, 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23');
-for (let day = 0; day < week.length; day++) {
+for (let day = 0; day < weekStats.length; day++) {
     let entry  = weekdays[day];
-    for (let hour = 0; hour < week[day].length; hour++) {
-        entry += ', ' + week[day][hour].averageEngagement; // Can be changed to numberOfTweets or totalEngagament
+    for (let hour = 0; hour < weekStats[day].length; hour++) {
+        // Entry can be changed to numberOfTweets or totalEngagament depending on what needs to be analyzed.
+        entry += ', ' + weekStats[day][hour].averageEngagement; 
     }
     console.log(entry);
 }
 ```
-
-I included a screenshot below where I have taken the CSV-styled data and put into Google Sheets, and added a bit of color scales to (to get a bit of heatmap feel) and came to the conclusion that posting during first half of the day on Tuesday and Wednesday seems to be a good time to post new tweets:
+I included a screenshot below where I have taken the CSV-styled data and copy/pasted it into Google Sheets, and added a bit of color scales to (to get a bit of heatmap feel) and came to the conclusion that posting during first half of the day on Tuesday and Wednesday seems to be a good time to post new tweets:
 
 ![Google Sheet screenshot](https://kennethlange.com/github_images/twitter_post_heatmap.png)
 
