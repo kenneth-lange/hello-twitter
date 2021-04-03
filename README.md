@@ -2,21 +2,21 @@
 `HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript:
 
 ```typescript
-twitter.fetchTweets({ query: 'Skywalker' }).then(tweets => tweets.forEach(tweet => console.log(tweet.text)));
+twitter.fetchTweets({ query: 'Skywalker' }).then(tweets => console.log(tweets));
 ```
 
 The purpose of this API is to make it easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
 
 ## Table of Content
 - [Get Started](#get-started)
-  * [Step 1: Create a Twitter Developer Account](Step-1:-Create-a-Twitter-Developer-Account)
-  * [Step 2: Install the NPM package](Step-2:-Install-the-NPM-package)
-  * [Step 3: Start Coding](Step-3:-Start-coding)
+  * [Create a Twitter Developer Account](#Create-a-Twitter-Developer-Account)
+  * [Install the NPM package](#Install-the-NPM-package)
+  * [Start Coding](#Start-Coding)
 - [Code Examples](#code-examples)
-  * [Example 1: What's Happening in California?](#example-1:-what's-happening-in-California?)
-  * [Example 2: What is Paul Graham Tweeting?](#example-2:-what-is-paul-graham-tweeting?)
-  * [Example 3: What are the Top 5 Most Popular Tweets about #TypeScript?](#Example-3:-What-are-the-Top-5-most-popular-tweets-about-#TypeScript?)
-  * [Example 4: What are They Tweeting at Stanford?](#Example-4:-What-are-they-tweeting-at-Stanford?)
+  * [What's Happening in California?](#what's-happening-in-California?)
+  * [What is Paul Graham Tweeting?](#what-is-paul-graham-tweeting?)
+  * [What are the Top 5 Most Popular Tweets about #TypeScript?](#What-are-the-Top-5-most-popular-tweets-about-#TypeScript?)
+  * [What are They Tweeting at Stanford?](#What-are-they-tweeting-at-Stanford?)
 - [Twitter Cookbook](#Twitter-Cookbook)
   * [Deep Link to a Tweet](#deep-link-to-a-tweet)
   * [Remove Line Breaks in a Tweet](#Remove-Line-Breaks-in-a-Tweet)
@@ -28,18 +28,18 @@ The purpose of this API is to make it easy to query Twitter data, so we can inve
 
 ## Get Started
 
-### Step 1: Create a Twitter Developer Account
+### Create a Twitter Developer Account
 You need a Twitter Developer account to get started. If you don't already have one, you can create one [here](https://developer.twitter.com/en/apply-for-access).
 
 Once you have a Twitter Developer Account, create a new app and go to the **Keys and tokens** tab and make a note of the values in **API key** and **API Secret Key** as you will need them soon 📝
 
-### Step 2: Install the NPM package
+### Install the NPM package
 
 ```console
 npm install hello-twitter
 ```
 
-### Step 3: Start Coding
+### Start Coding
 Here's a simple hello world program to get you started. You'll need the **API Key** and **API Secret** from Step 1:
 
 ```javascript
@@ -57,7 +57,7 @@ The collection of tweets returned is fully typed and documented (in TSDoc), so i
 
 ## Code Examples
 
-### Example 1: What's Happening in California?
+### What's Happening in California?
 The most basic example is simply to execute a Twitter query, just like you would in the Twitter App, and then list the results.
 
 ```javascript
@@ -68,7 +68,7 @@ tweets.forEach(tweet => {
 });
 ```
 
-### Example 2: What is Paul Graham Tweeting?
+### What is Paul Graham Tweeting?
 So you wanna see what a specific user is weeting, but you don't want to see their retweets or replies. You can easily use JavaScript `filter` to remove unneeded tweets.
 
 ```javascript
@@ -79,7 +79,7 @@ tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
 });
 ```
 
-### Example 3: What are the Top 5 Most Popular Tweets about #TypeScript?
+### What are the Top 5 Most Popular Tweets about #TypeScript?
 The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
 
 ```javascript
@@ -91,7 +91,7 @@ tweets.slice(0, 4).forEach((tweet, index) => {
 });
 ```
 
-### Example 4: What are They Tweeting at Stanford?
+### What are They Tweeting at Stanford?
 We can use the geo search to find tweets posted at a specific geographical location.
 
 For Stanford, the latitude is 37.424107 and the longitude is -122.166077.
