@@ -1,9 +1,32 @@
 # HelloTwitter 👋
-`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript.
+`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript:
 
-The purpose of this API is to make it fast and super easy to query Twitter data, without needing to waste time on writing plumbing code, so we instead can invest our time in data analysis and other higher-value tasks.
+```typescript
+twitter.fetchTweets({ query: 'Skywalker' }).then(tweets => tweets.forEach(tweet => console.log(tweet.text)));
+```
 
-## Get started
+The purpose of this API is to make it easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
+
+## Table of Content
+- [Get Started](#get-started)
+  * [Step 1: Create a Twitter Developer Account](Step-1:-Create-a-Twitter-Developer-Account)
+  * [Step 2: Install the NPM package](Step-2:-Install-the-NPM-package)
+  * [Step 3: Start Coding](Step-3:-Start-coding)
+- [Code Examples](#code-examples)
+  * [Example 1: What's Happening in California?](#example-1:-what's-happening-in-California?)
+  * [Example 2: What is Paul Graham Tweeting?](#example-2:-what-is-paul-graham-tweeting?)
+  * [Example 3: What are the Top 5 Most Popular Tweets about #TypeScript?](#Example-3:-What-are-the-Top-5-most-popular-tweets-about-#TypeScript?)
+  * [Example 4: What are They Tweeting at Stanford?](#Example-4:-What-are-they-tweeting-at-Stanford?)
+- [Twitter Cookbook](#Twitter-Cookbook)
+  * [Deep Link to a Tweet](#deep-link-to-a-tweet)
+  * [Remove Line Breaks in a Tweet](#Remove-Line-Breaks-in-a-Tweet)
+  * [Fetch All Tweets from a Specific User](#Fetch-All-Tweets-from-a-Specific-User)
+  * [Find the Oldest Tweet in a Collection of Tweets](#Find-the-Oldest-Tweet-in-a-Collection-of-Tweets)
+  * [The Best Time to Tweet](#The-Best-Time-to-Tweet)
+  * [The Best Time to Tweet (Part 2)](#The-Best-Time-to-Tweet-(Part-2))
+- [License](License)
+
+## Get Started
 
 ### Step 1: Create a Twitter Developer Account
 You need a Twitter Developer account to get started. If you don't already have one, you can create one [here](https://developer.twitter.com/en/apply-for-access).
@@ -16,7 +39,7 @@ Once you have a Twitter Developer Account, create a new app and go to the **Keys
 npm install hello-twitter
 ```
 
-### Step 3: Start coding
+### Step 3: Start Coding
 Here's a simple hello world program to get you started. You'll need the **API Key** and **API Secret** from Step 1:
 
 ```javascript
@@ -32,9 +55,9 @@ twitter.fetchTweets({ query: 'Hello world' }).then(tweets => console.log(tweets)
 
 The collection of tweets returned is fully typed and documented (in TSDoc), so it should be easy to continue from here simply by using your IDE's autocomplete and intellisense.
 
-## Code examples
+## Code Examples
 
-### Example 1: What's happening in California?
+### Example 1: What's Happening in California?
 The most basic example is simply to execute a Twitter query, just like you would in the Twitter App, and then list the results.
 
 ```javascript
@@ -45,7 +68,7 @@ tweets.forEach(tweet => {
 });
 ```
 
-### Example 2: What is Paul Graham tweeting?
+### Example 2: What is Paul Graham Tweeting?
 So you wanna see what a specific user is weeting, but you don't want to see their retweets or replies. You can easily use JavaScript `filter` to remove unneeded tweets.
 
 ```javascript
@@ -56,7 +79,7 @@ tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
 });
 ```
 
-### Example 3: What are the Top 5 most popular tweets about #TypeScript?
+### Example 3: What are the Top 5 Most Popular Tweets about #TypeScript?
 The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
 
 ```javascript
@@ -68,7 +91,7 @@ tweets.slice(0, 4).forEach((tweet, index) => {
 });
 ```
 
-### Example 4: What are they tweeting at Stanford?
+### Example 4: What are They Tweeting at Stanford?
 We can use the geo search to find tweets posted at a specific geographical location.
 
 For Stanford, the latitude is 37.424107 and the longitude is -122.166077.
@@ -88,7 +111,7 @@ tweets.forEach(tweet => {
 
 You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.likes`).
   
-## Tips and Tricks
+## Twitter Cookbook
 Small helpful tips and tricks when you are tinkering with Twitter data. Some of the tips are specific to `hello-twitter` and others are general. 
 
 ### Deep Link to a Tweet
@@ -105,7 +128,7 @@ const link = `https://twitter.com/${tweet.author.username}/status/${tweet.id}`;
 is actually _not_ using it, so you can write anything there and the link still 
 works correctly as long as you have the right tweet ID.
 
-### Remove line breaks in tweets
+### Remove Line Breaks in a Tweet
 When printing a list of tweets to the console, it can be a annoying that a tweet can be spread over multiple lines as it makes it harder to see where one tweets stops and the next begins.
 
 You can use JavaScript's `replace` function to replace the line breaks with spaces:
@@ -114,7 +137,7 @@ You can use JavaScript's `replace` function to replace the line breaks with spac
 console.log(tweet.text.replace(/\n/g, ' '));
 ```
 
-### Fetch *all* tweets from a specific user
+### Fetch All Tweets from a Specific User
 If you want all tweets, from a specific user, that are available through Twitter's API you can use a very high number as the `resultSize` argument.
 
 ```javascript
@@ -128,7 +151,7 @@ However, for Twitter users with many tweets (>3,000) there is a risk that, even 
 
 ⛔️ **Warning:** Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `hello-twitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
 
-### Find the oldest tweet in a collection of tweets
+### Find the Oldest Tweet in a Collection of Tweets
 Often when you need to create a timeline or similar, you need the oldest (and newest) tweet in a collection to know the total duration of the timeline.
 
 You can use JavaScript's `reduce` function to find the oldest tweet:
@@ -144,7 +167,7 @@ Getting the newest tweet in a tweet collection is left as a fun exercise for the
 
 And alternative approach is also simply to sort the array (`tweets.sort`) and then take the first and last element.
 
-### Find the best time to tweet
+### The Best Time to Tweet
 Much tweet analytics is about finding the optimal time to tweet. The example below is just a beginning that shows how many tweets the user has posted on each weekday.
 
 ```javascript
@@ -165,7 +188,7 @@ tweetsPerDay.forEach((numberOfTweets, day) => {
 
 We can easily increase the granularity by seeing the time of day when the user tweets (`tweet.created.getHours()`) and instead of looking at the number of tweets, we can see what it the most popular time to tweet (by looking at `tweet.likes` or `tweet.retweets`).
 
-### Find the best time to tweet - part 2
+### The Best Time to Tweet (Part 2)
 Given that, "When is the optimal time for me to tweet?" seems to be the top question for Twitter Analytics, I thought I would include a quick and dirty example of how to achieve this:
 
 ```javascript
@@ -216,3 +239,7 @@ I included a screenshot below where I have taken the CSV-styled data and copy/pa
 Looking at column Z, it seems like Tuesday is the best day to tweet, and looking at row 9 it would seem like posting between 09:00 and 11:00 would be the best time.
 
 The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet. And it would without a doubt be a lot nicer to create a frontend and display the results there instead of using Google Sheets, but that's way beyond the scope for this little tip 😊
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/kenneth-lange/hello-twitter/blob/main/LICENSE).
