@@ -2,7 +2,11 @@
 `HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript:
 
 ```typescript
-twitter.fetchTweets({ query: 'Skywalker' }).then(tweets => console.log(tweets));
+const tweets = await twitter.fetchTweets({ query: 'Skywalker' });
+
+tweets.forEach(tweet => {
+    console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
+});
 ```
 
 The purpose of this API is to make it easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
@@ -13,10 +17,10 @@ The purpose of this API is to make it easy to query Twitter data, so we can inve
   * [Install the NPM package](#Install-the-NPM-package)
   * [Start Coding](#Start-Coding)
 - [Code Examples](#code-examples)
-  * [What's Happening in California?](#what's-happening-in-California?)
-  * [What is Paul Graham Tweeting?](#what-is-paul-graham-tweeting?)
-  * [What are the Top 5 Most Popular Tweets about #TypeScript?](#What-are-the-Top-5-most-popular-tweets-about-#TypeScript?)
-  * [What are They Tweeting at Stanford?](#What-are-they-tweeting-at-Stanford?)
+  * [What's Happening in California?](#whats-happening-in-California)
+  * [What is Paul Graham Tweeting?](#what-is-paul-graham-tweeting)
+  * [What are the Top 5 Most Popular Tweets about #TypeScript?](#What-are-the-Top-5-most-popular-tweets-about-TypeScript?)
+  * [What are They Tweeting at Stanford?](#What-are-they-tweeting-at-Stanford)
 - [Twitter Cookbook](#Twitter-Cookbook)
   * [Deep Link to a Tweet](#deep-link-to-a-tweet)
   * [Remove Line Breaks in a Tweet](#Remove-Line-Breaks-in-a-Tweet)
