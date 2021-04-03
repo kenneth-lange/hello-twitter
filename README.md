@@ -1,5 +1,5 @@
 # HelloTwitter 👋
-`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript for TypeScript.
+`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript.
 
 The purpose of this API is to make it fast and super easy to query Twitter data, without needing to waste time on writing plumbing code, so we instead can invest our time in data analysis and other higher-value tasks.
 
@@ -209,8 +209,10 @@ for (let day = 0; day < weekStats.length; day++) {
     console.log(entry);
 }
 ```
-I included a screenshot below where I have taken the CSV-styled data and copy/pasted it into Google Sheets, and added a bit of color scales to (to get a bit of heatmap feel) and came to the conclusion that posting during first half of the day on Tuesday and Wednesday seems to be a good time to post new tweets:
-
+I included a screenshot below where I have taken the CSV-styled data and copy/pasted it into Google Sheets, added the totals in Column Z and Row 9, and colorized the data to get a heatmap feel:
+ 
 ![Google Sheet screenshot](https://kennethlange.com/github_images/twitter_post_heatmap.png)
+
+Looking at column Z, it seems like Tuesday is the best day to tweet, and looking at row 9 it would seem like posting between 09:00 and 11:00 would be the best time.
 
 The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet. And it would without a doubt be a lot nicer to create a frontend and display the results there instead of using Google Sheets, but that's way beyond the scope for this little tip 😊
