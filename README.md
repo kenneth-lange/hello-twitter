@@ -1,5 +1,5 @@
 # HelloTwitter 👋
-`HelloTwitter` is a minimalistic, opinionated Twitter Query API, written in TypeScript:
+`HelloTwitter` is a minimalistic, opinionated Twitter Query API for TypeScript:
 
 ```typescript
 const tweets = await twitter.fetchTweets({ query: 'Skywalker' });
@@ -8,26 +8,26 @@ tweets.forEach(tweet => {
 });
 ```
 
-The purpose of this API is to make it easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
+The purpose of `HelloTwitter` is to make it super easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
 
 ## Table of Content
 - [Get Started](#get-started)
   * [Create a Twitter Developer Account](#Create-a-Twitter-Developer-Account)
   * [Install the NPM package](#Install-the-NPM-package)
-  * [Start Coding](#Start-Coding)
-- [Code Examples](#code-examples)
-  * [What's Happening in California?](#whats-happening-in-California)
-  * [What is Paul Graham Tweeting?](#what-is-paul-graham-tweeting)
-  * [What are the Top 5 Most Popular Tweets about #TypeScript?](#What-are-the-Top-5-most-popular-tweets-about-TypeScript)
-  * [What are They Tweeting at Stanford?](#What-are-they-tweeting-at-Stanford)
+  * [Happy coding!](#Happy-coding)
 - [Twitter Cookbook](#Twitter-Cookbook)
-  * [Deep Link to a Tweet](#deep-link-to-a-tweet)
-  * [Remove Line Breaks in a Tweet](#Remove-Line-Breaks-in-a-Tweet)
-  * [Fetch All Tweets from a Specific User](#Fetch-All-Tweets-from-a-Specific-User)
-  * [Find the Oldest Tweet in a Collection of Tweets](#Find-the-Oldest-Tweet-in-a-Collection-of-Tweets)
-  * [The Best Time to Tweet](#The-Best-Time-to-Tweet)
-  * [The Best Time to Tweet (Part 2)](#The-Best-Time-to-Tweet-Part-2)
-- [License](License)
+  * [Recipe 1: Perform a basic Twitter query](#Recipe-1-Perform-a-basic-Twitter-query)
+  * [Recipe 2: Find the most popular day to tweet](#Recipe-2-Find-the-most-popular-day-to-tweet)
+  * [Recipe 3: Find the best time to tweet](#Recipe-3-Find-the-best-time-to-tweet)
+  * [Recipe 4: Create a deeplink to a tweet](#Recipe-4-Create-a-deeplink-to-a-tweet)
+  * [Recipe 5: Fetch tweets from a specific user](#Recipe-5-Fetch-tweets-from-a-specific-user)
+  * [Recipe 6: Fetch **all** tweets from a specific user](#Recipe-6-Fetch-all-tweets-from-a-specific-user)
+  * [Recipe 7: Find the most popular tweets about a topic](#Recipe-7-Find-the-most-popular-tweets-about-a-topic)
+  * [Recipe 8: Perform a geo search](#Recipe-8-Perform-a-geo-search)
+  * [Recipe 9: Remove line breaks from a tweet](#Recipe-9-Remove-line-breaks-from-a-tweet)
+  * [Recipe 10: Find the oldest tweet in a collection of tweets](#Recipe-10-Find-the-oldest-tweet-in-a-collection-of-tweets)
+- [License](#License)
+
 
 ## Get Started
 
@@ -42,7 +42,7 @@ Once you have a Twitter Developer Account, create a new app and go to the **Keys
 npm install hello-twitter
 ```
 
-### Start Coding
+### Happy coding!
 Here's a simple hello world program to get you started. You'll need the **API Key** and **API Secret** from Step 1:
 
 ```typescript
@@ -58,9 +58,14 @@ twitter.fetchTweets({ query: 'Hello world' }).then(tweets => console.log(tweets)
 
 The collection of tweets returned is fully typed and documented (in TSDoc), so it should be easy to continue from here simply by using your IDE's autocomplete and intellisense.
 
-## Code Examples
+I have also included a **Twitter Cookbook** below with recipes for tasks that people often want to do with Twitter data.
 
-### What's Happening in California?
+  
+## Twitter Cookbook
+Here are some tips and tricks that can be handy when you tinker with Twitter data. Some of the recipes are specific to `HelloTwitter` and others are general. 
+
+
+### Recipe 1: Perform a basic Twitter query
 The most basic example is simply to execute a Twitter query, just like you would in the Twitter App, and then list the results.
 
 ```typescript
@@ -71,106 +76,19 @@ tweets.forEach(tweet => {
 });
 ```
 
-### What is Paul Graham Tweeting?
-So you wanna see what a specific user is weeting, but you don't want to see their retweets or replies. You can easily use JavaScript `filter` to remove unneeded tweets.
+Or you can use a `promise` instead of `async/await`: 
 
 ```typescript
-// Get the latest original tweets (no replies or retweets) from Paul Graham:
-const tweets = await twitter.fetchTimeline({ username: 'paulg' });
-tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
-    console.log(`"${tweet.text}" (${tweet.likes} likes)`);
+// Let's check out what they're writing about California
+twitter.fetchTweets({ query: 'California' }).then(tweets => {
+    tweets.forEach(tweet => {
+        console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
+    });
 });
 ```
 
-### What are the Top 5 Most Popular Tweets about #TypeScript?
-The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
 
-```typescript
-// Get a Top 5 of the most popular tweets tagged with #TypeScript:
-const tweets = await twitter.fetchTweets({ query: '#TypeScript' });
-tweets.sort((a, b) => b.likes - a.likes);
-tweets.slice(0, 4).forEach((tweet, index) => {
-    console.log(`${index+1}: "${tweet.text}" by ${tweet.author.name} (${tweet.likes} likes)`);
-});
-```
-
-### What are They Tweeting at Stanford?
-We can use the geo search to find tweets posted at a specific geographical location.
-
-For Stanford, the latitude is 37.424107 and the longitude is -122.166077.
-
-```typescript
-const tweets = await twitter.fetchTweets({
-    location: {
-        latitude: 37.424107,
-        longitude: -122.166077
-    }
-});
-
-tweets.forEach(tweet => {
-    console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
-});
-```
-
-You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.likes`).
-  
-## Twitter Cookbook
-Small helpful tips and tricks when you are tinkering with Twitter data. Some of the tips are specific to `hello-twitter` and others are general. 
-
-### Deep Link to a Tweet
-Sometimes you want to deep link to a tweet on Twitter, so you can engage with the tweet on Twitter's platform.
-
-A deep link to a tweet follows this pattern: `https://twitter.com/<username>/status/<tweet-id>`.
-
-So with `HelloTwitter` we can create the deep link like this:
-```typescript
-const link = `https://twitter.com/${tweet.author.username}/status/${tweet.id}`;
-```
-
-💡 **Tip:** If you don't have access to the `username`, fear not, because Twitter
-is actually _not_ using it, so you can write anything there and the link still 
-works correctly as long as you have the right tweet ID.
-
-### Remove Line Breaks in a Tweet
-When printing a list of tweets to the console, it can be a annoying that a tweet can be spread over multiple lines as it makes it harder to see where one tweets stops and the next begins.
-
-You can use JavaScript's `replace` function to replace the line breaks with spaces:
-
-```typescript
-console.log(tweet.text.replace(/\n/g, ' '));
-```
-
-### Fetch All Tweets from a Specific User
-If you want all tweets, from a specific user, that are available through Twitter's API you can use a very high number as the `resultSize` argument.
-
-```typescript
-const tweets = await twitter.fetchTimeline({ username: 'paulg', resultSize: Number.MAX_SAFE_INTEGER });
-
-console.log(`number of tweets returned: ${tweets.length}.`);
-console.log(`total number of tweets according to twitter: ${tweets[0].author.numberOfTweets}.`);
-```
-
-However, for Twitter users with many tweets (>3,000) there is a risk that, even with a high number in `resultSize`, you will not get all of the tweets (as see in `tweet.author.numberOfTweets`); in particular, the user's oldest tweets. 
-
-⛔️ **Warning:** Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `hello-twitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
-
-### Find the Oldest Tweet in a Collection of Tweets
-Often when you need to create a timeline or similar, you need the oldest (and newest) tweet in a collection to know the total duration of the timeline.
-
-You can use JavaScript's `reduce` function to find the oldest tweet:
-
-```typescript
-const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
-const oldestTweet = tweets.reduce((accumulator, currentValue) => {
-    return currentValue.created < accumulator.created ? currentValue : accumulator
-});
-```
-
-Getting the newest tweet in a tweet collection is left as a fun exercise for the reader 😊
-
-And alternative approach is also simply to sort the array (`tweets.sort`) and then take the first and last element.
-
-### The Best Time to Tweet
+### Recipe 2: Find the most popular day to tweet
 Much tweet analytics is about finding the optimal time to tweet. The example below is just a beginning that shows how many tweets the user has posted on each weekday.
 
 ```typescript
@@ -191,7 +109,8 @@ tweetsPerDay.forEach((numberOfTweets, day) => {
 
 We can easily increase the granularity by seeing the time of day when the user tweets (`tweet.created.getHours()`) and instead of looking at the number of tweets, we can see what it the most popular time to tweet (by looking at `tweet.likes` or `tweet.retweets`).
 
-### The Best Time to Tweet (Part 2)
+
+### Recipe 3: Find the best time to tweet
 Given that, "When is the optimal time for me to tweet?" seems to be the top question for Twitter Analytics, I thought I would include a quick and dirty example of how to achieve this:
 
 ```typescript
@@ -241,8 +160,112 @@ I included a screenshot below where I have taken the CSV-styled data and copy/pa
 
 Looking at column Z, it seems like Tuesday is the best day to tweet, and looking at row 9 it would seem like posting between 09:00 and 11:00 would be the best time.
 
-The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet. And it would without a doubt be a lot nicer to create a frontend and display the results there instead of using Google Sheets, but that's way beyond the scope for this little tip 😊
+The example can be further enhanced with limiting the included tweets to a specific time period (like 'last month') and the median (instead of average) could be used to protect against a single, extremely popular tweet. And it would without a doubt be a lot nicer to create a frontend and display the results there instead of using Google Sheets, but that's way beyond the scope for this little recipe 😊
+
+
+### Recipe 4: Create a deeplink to a tweet
+Sometimes you want to deep link to a tweet on Twitter, so you can engage with the tweet on Twitter's platform.
+
+A deep link to a tweet follows this pattern: `https://twitter.com/<username>/status/<tweet-id>`.
+
+So with `HelloTwitter` we can create the deep link like this:
+```typescript
+const link = `https://twitter.com/${tweet.author.username}/status/${tweet.id}`;
+```
+
+💡 **Tip:** If you don't have access to the `username`, fear not, because Twitter
+is actually _not_ using it, so you can write anything there and the link still 
+works correctly as long as you have the right tweet ID.
+
+
+### Recipe 5: Fetch tweets from a specific user
+So you wanna see what a specific user is weeting, but you don't want to see their retweets or replies. You can easily use JavaScript `filter` to remove unneeded tweets.
+
+```typescript
+// Get the latest original tweets (no replies or retweets) from Paul Graham:
+const tweets = await twitter.fetchTimeline({ username: 'paulg' });
+tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
+    console.log(`"${tweet.text}" (${tweet.likes} likes)`);
+});
+```
+
+### Recipe 6: Fetch **all** tweets from a specific user
+If you want all tweets, from a specific user, that are available through Twitter's API you can use a very high number as the `resultSize` argument.
+
+```typescript
+const tweets = await twitter.fetchTimeline({ username: 'paulg', resultSize: Number.MAX_SAFE_INTEGER });
+
+console.log(`number of tweets returned: ${tweets.length}.`);
+console.log(`total number of tweets according to twitter: ${tweets[0].author.numberOfTweets}.`);
+```
+
+However, for Twitter users with many tweets (>3,000) there is a risk that, even with a high number in `resultSize`, you will not get all of the tweets (compared to the value in `tweet.author.numberOfTweets`); in particular, the user's oldest tweets. 
+
+⛔️ **Warning:** Twitter returns tweets in chunks of 200 tweets. So when you ask for more than 200 tweets, then multiple APIs call will be made to Twitter, which pushes you closer towards the max limits. `HelloTwitter` will automatically stop when no more Tweets are returned regardless of what size you have asked for.
+
+
+### Recipe 7: Find the most popular tweets about a topic
+The list of tweets returned by `HelloTwitter` is easy to manipulated with JavaScript's built-in list functions, such as `filter`, `sort`, `slice`, `map`, and `reduce`.
+
+So to get the most popular tweets in a collection, we can simply sort by `tweet.likes` (or `tweet.retweets` or both) and then take the first N elements from the list.
+
+```typescript
+// Get a Top 5 of the most popular tweets tagged with #TypeScript:
+const tweets = await twitter.fetchTweets({ query: '#TypeScript' });
+tweets.sort((a, b) => b.likes - a.likes);
+tweets.slice(0, 5).forEach((tweet, index) => {
+    console.log(`${index+1}: "${tweet.text}" by ${tweet.author.name} (${tweet.likes} likes)`);
+});
+```
+
+
+### Recipe 8: Perform a geo search
+We can use the geo search to find tweets posted at a specific geographical location.
+
+So let's figure out what they're tweeting at Stanford (latitude: 37.424107 and longitude: -122.166077).
+
+```typescript
+const tweets = await twitter.fetchTweets({
+    location: {
+        latitude: 37.424107,
+        longitude: -122.166077
+    }
+});
+
+tweets.forEach(tweet => {
+    console.log(`${tweet.author.name} tweeted: "${tweet.text}"`);
+});
+```
+
+You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.likes`).
+
+
+### Recipe 9: Remove line breaks from a tweet
+When printing a list of tweets to the console, it can be a annoying that a tweet can be spread over multiple lines as it makes it harder to see where one tweets stops and the next begins.
+
+You can use JavaScript's `replace` function to replace the line breaks with spaces:
+
+```typescript
+console.log(tweet.text.replace(/\n/g, ' '));
+```
+
+### Recipe 10: Find the oldest tweet in a collection of tweets
+Often when you need to create a timeline or similar, you need the oldest (and newest) tweet in a collection to know the total duration of the timeline.
+
+You can use JavaScript's `reduce` function to find the oldest tweet:
+
+```typescript
+const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
+const oldestTweet = tweets.reduce((accumulator, currentValue) => {
+    return currentValue.created < accumulator.created ? currentValue : accumulator
+});
+```
+
+Getting the newest tweet in a tweet collection is left as a fun exercise for the reader 😊
+
+And alternative approach is also simply to sort the array (`tweets.sort`) and then take the first and last element.
+
+
 
 ## License
-
 This project is licensed under the [MIT License](https://github.com/kenneth-lange/hello-twitter/blob/main/LICENSE).
