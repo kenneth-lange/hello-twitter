@@ -1,5 +1,5 @@
 # HelloTwitter 👋
-`HelloTwitter` is a minimalistic, opinionated Twitter Query API for TypeScript:
+`HelloTwitter` is a simple Twitter Query API for TypeScript:
 
 ```typescript
 const tweets = await twitter.fetchTweets({ query: 'Skywalker' });
@@ -21,11 +21,12 @@ The purpose of `HelloTwitter` is to make it super easy to query Twitter data, so
   * [Recipe 3: Find the best time to tweet](#Recipe-3-Find-the-best-time-to-tweet)
   * [Recipe 4: Create a deeplink to a tweet](#Recipe-4-Create-a-deeplink-to-a-tweet)
   * [Recipe 5: Fetch tweets from a specific user](#Recipe-5-Fetch-tweets-from-a-specific-user)
-  * [Recipe 6: Fetch **all** tweets from a specific user](#Recipe-6-Fetch-all-tweets-from-a-specific-user)
+  * [Recipe 6: Fetch all tweets from a specific user](#Recipe-6-Fetch-all-tweets-from-a-specific-user)
   * [Recipe 7: Find the most popular tweets about a topic](#Recipe-7-Find-the-most-popular-tweets-about-a-topic)
-  * [Recipe 8: Perform a geo search](#Recipe-8-Perform-a-geo-search)
+  * [Recipe 8: Perform a location-based search](#Perform-a-location-based-search)
   * [Recipe 9: Remove line breaks from a tweet](#Recipe-9-Remove-line-breaks-from-a-tweet)
   * [Recipe 10: Find the oldest tweet in a collection of tweets](#Recipe-10-Find-the-oldest-tweet-in-a-collection-of-tweets)
+  * [Recipe 11: Find most popular emojis in a collection of tweets](#Recipe-11-Find-most-popular-emojis-in-a-collection-of-tweets)
 - [License](#License)
 
 
@@ -189,7 +190,7 @@ tweets.filter(tweet => !tweet.isReply && !tweet.isRetweet).forEach(tweet => {
 });
 ```
 
-### Recipe 6: Fetch **all** tweets from a specific user
+### Recipe 6: Fetch all tweets from a specific user
 If you want all tweets, from a specific user, that are available through Twitter's API you can use a very high number as the `resultSize` argument.
 
 ```typescript
@@ -219,7 +220,7 @@ tweets.slice(0, 5).forEach((tweet, index) => {
 ```
 
 
-### Recipe 8: Perform a geo search
+### Recipe 8: Perform a location-based search
 We can use the geo search to find tweets posted at a specific geographical location.
 
 So let's figure out what they're tweeting at Stanford (latitude: 37.424107 and longitude: -122.166077).
@@ -265,6 +266,24 @@ Getting the newest tweet in a tweet collection is left as a fun exercise for the
 
 And alternative approach is also simply to sort the array (`tweets.sort`) and then take the first and last element.
 
+
+### Recipe 11: Find most popular emojis in a collection of tweets
+Emojis are popular😊 If we wanna see what emojis a user is using in his or her tweets we can use a regular expression: 
+
+```typescript
+const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
+
+const emojiFrequency = new Map<string, number>();
+tweets.forEach(tweet => {
+    const emojis = tweet.text.match(/\p{Emoji_Presentation}/gu) ?? [];
+    emojis.forEach(emoji => {
+        const newFrequency = (emojiFrequency.get(emoji) ?? 0) + 1;
+        emojiFrequency.set(emoji, newFrequency);
+    });
+});
+console.log(emojiFrequency);
+```
+Emojis in JavaScript (and TypeScript) can be tricky to handle with regular expressions, due to the way Unicode is implemented. If the simple regular expression above is not strong enough to capture all your emojis, you may benefit from using [extract-emoji](https://www.npmjs.com/package/extract-emoji), a dedicated emoji module. 
 
 
 ## License
