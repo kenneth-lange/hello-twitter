@@ -1,5 +1,6 @@
 # HelloTwitter 👋
-`HelloTwitter` is a simple Twitter Query API for TypeScript:
+`HelloTwitter` is a simple NodeJS module that makes it super easy to query Twitter data from TypeScript:
+
 
 ```typescript
 const tweets = await twitter.fetchTweets({ query: 'Skywalker' });
@@ -8,7 +9,7 @@ tweets.forEach(tweet => {
 });
 ```
 
-The purpose of `HelloTwitter` is to make it super easy to query Twitter data, so we can invest our time in data analysis, visualization, and other higher-value tasks.
+`HelloTwitter` also comes with a big [Twitter Cookbook](#Twitter-Cookbook) stuffed with easy recipes for many of the tasks that people often want to do with Twitter data, such as performing location-based searches for tweets. 
 
 ## Table of Content
 - [Get Started](#get-started)
@@ -23,7 +24,7 @@ The purpose of `HelloTwitter` is to make it super easy to query Twitter data, so
   * [Recipe 5: Fetch tweets from a specific user](#Recipe-5-Fetch-tweets-from-a-specific-user)
   * [Recipe 6: Fetch all tweets from a specific user](#Recipe-6-Fetch-all-tweets-from-a-specific-user)
   * [Recipe 7: Find the most popular tweets about a topic](#Recipe-7-Find-the-most-popular-tweets-about-a-topic)
-  * [Recipe 8: Perform a location-based search](#Perform-a-location-based-search)
+  * [Recipe 8: Perform a location-based search](#Recipe-8-Perform-a-location-based-search)
   * [Recipe 9: Remove line breaks from a tweet](#Recipe-9-Remove-line-breaks-from-a-tweet)
   * [Recipe 10: Find the oldest tweet in a collection of tweets](#Recipe-10-Find-the-oldest-tweet-in-a-collection-of-tweets)
   * [Recipe 11: Find most popular emojis in a collection of tweets](#Recipe-11-Find-most-popular-emojis-in-a-collection-of-tweets)
