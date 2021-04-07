@@ -9,7 +9,7 @@ tweets.forEach(tweet => {
 });
 ```
 
-`HelloTwitter` also comes with a big [Twitter Cookbook](#Twitter-Cookbook) stuffed with easy recipes for many of the tasks that people often want to do with Twitter data, such as performing location-based searches for tweets. 
+`HelloTwitter` also comes with a growing [Twitter Cookbook](#Twitter-Cookbook) stuffed with easy recipes for many of the tasks that people often want to do with Twitter data, such as performing location-based searches for tweets. 
 
 ## Table of Content
 - [Get Started](#get-started)
@@ -272,9 +272,9 @@ And alternative approach is also simply to sort the array (`tweets.sort`) and th
 Emojis are popular😊 If we wanna see what emojis a user is using in his or her tweets we can use a regular expression: 
 
 ```typescript
-const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
-
 const emojiFrequency = new Map<string, number>();
+
+const tweets = await twitter.fetchTimeline({ username: 'kennethlange' });
 tweets.forEach(tweet => {
     const emojis = tweet.text.match(/\p{Emoji_Presentation}/gu) ?? [];
     emojis.forEach(emoji => {

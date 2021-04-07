@@ -1,7 +1,7 @@
 {
   "name": "hello-twitter",
-  "version": "0.0.7",
-  "description": "A minimalistic, opinionated Twitter Query API for TypeScript.",
+  "version": "0.0.8",
+  "description": "Makes it super easy to query Twitter data from TypeScript",
   "main": "dist/HelloTwitter.js",
   "types": "dist/HelloTwitter.d.js",
   "scripts": {
