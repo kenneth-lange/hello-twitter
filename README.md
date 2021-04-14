@@ -28,6 +28,7 @@ tweets.forEach(tweet => {
   * [Recipe 9: Remove line breaks from a tweet](#Recipe-9-Remove-line-breaks-from-a-tweet)
   * [Recipe 10: Find the oldest tweet in a collection of tweets](#Recipe-10-Find-the-oldest-tweet-in-a-collection-of-tweets)
   * [Recipe 11: Find most popular emojis in a collection of tweets](#Recipe-11-Find-most-popular-emojis-in-a-collection-of-tweets)
+  * [Recipe 12: Sort tweets (by popularity)](#Recipe-12-Sort-tweets-by-popularity)
 - [License](#License)
 
 
@@ -285,6 +286,21 @@ tweets.forEach(tweet => {
 console.log(emojiFrequency);
 ```
 Emojis in JavaScript (and TypeScript) can be tricky to handle with regular expressions, due to the way Unicode is implemented. If the simple regular expression above is not strong enough to capture all your emojis, you may benefit from using [extract-emoji](https://www.npmjs.com/package/extract-emoji), a dedicated emoji module. 
+
+
+### Recipe 12: Sort tweets (by popularity)
+You can use JavaScript's `sort` function to sort a collection of tweets by popularity:
+
+```typescript
+tweets.sort((a, b) => b.retweets - a.retweets); // Descending
+tweets.sort((a, b) => a.retweets - b.retweets); // Ascending
+```
+
+If you like to use both number of retweets and likes for the calculations of tweet popularity, you can (as suggested by *Mining the Social Web, 3rd Edition*), add a weight of 1.0 to retweets and 0.1 to likes:
+
+```typescript
+tweets.sort((a, b) => (b.retweets + (0.1 * b.likes)) - (a.retweets + (0.1 * a.likes)));
+```
 
 
 ## License
