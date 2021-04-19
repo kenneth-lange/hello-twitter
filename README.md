@@ -240,7 +240,7 @@ tweets.forEach(tweet => {
 });
 ```
 
-You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.likes`).
+You can easily tinker with the example so it only shows tweets with photos (hint: `tweet.entities.media.length > 0`) or sort them by popularity (hint: `tweet.retweets`).
 
 
 ### Recipe 9: Remove line breaks from a tweet
@@ -301,6 +301,30 @@ If you like to use both number of retweets and likes for the calculations of twe
 ```typescript
 tweets.sort((a, b) => (b.retweets + (0.1 * b.likes)) - (a.retweets + (0.1 * a.likes)));
 ```
+
+### Recipe 13: Filter away old tweets
+If you want to filter away tweets older than a certain date, create a new `Date` object with the desired cut-off data and use JavaScript's `filter` function to do the rest:
+
+```typescript
+const oneMonthAgo = new Date();
+oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+const newTweets = tweets.filter(tweet => tweet.created > oneMonthAgo);
+```
+
+### Recipe 14: Find engaging tweets from a user regardless of number of followers
+In *The #ArtOfTwitter*, Daniel Parsons writes that a tweet should have about one interaction (such as a retweet or a like) for every 3,000 followers of the user for the tweet to be considered engaging. So if an user has 6,000 followers then there should be, on average, two interactions per tweet.
+
+This measure can be easily calculated:
+
+```typescript
+const qualityTweets = tweet.filter(tweet => {
+    return (tweet.likes + tweet.retweets) >= (tweet.author.followers / 3000);
+});
+```
+
+If you are performing searches that returns tweets from different author, this can be a way to filter away low-quality tweets in a way that it fair to smaller accounts and be a better alternative to specify an absolute, minimum number of retweets or likes that tweets must satisfy regardless of the number of followers.
+
 
 
 ## License
