@@ -29,6 +29,9 @@ tweets.forEach(tweet => {
   * [Recipe 10: Find the oldest tweet in a collection of tweets](#Recipe-10-Find-the-oldest-tweet-in-a-collection-of-tweets)
   * [Recipe 11: Find most popular emojis in a collection of tweets](#Recipe-11-Find-most-popular-emojis-in-a-collection-of-tweets)
   * [Recipe 12: Sort tweets (by popularity)](#Recipe-12-Sort-tweets-by-popularity)
+  * [Recipe 13: Filter away old tweets](#Recipe-13-Filter-away-old-tweets)
+  * [Recipe 14: Find engaging tweets from a user regardless of number of followers](#Recipe-14-Find-engaging-tweets-from-a-user-regardless-of-number-of-followers)
+
 - [License](#License)
 
 
